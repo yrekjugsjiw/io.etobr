@@ -119,7 +119,7 @@
 
             // Отправляем сообщение в группу через Telegram Bot API
             const botToken = '7808613132:AAED4eckVrpvNo9mraL3LcOSgzrnUCXbvQI'; // Замените на реальный токен
-            const groupChatId = 'ВАШ_GROUP_CHAT_ID'; // ID группового чата (например, -100123456789)
+            const groupChatId = '-4927394143'; // ID группового чата (например, -100123456789)
 
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${groupChatId}&text=${encodeURIComponent(message)}`)
                 .then(response => response.json())
