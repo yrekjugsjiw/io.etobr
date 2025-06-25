@@ -249,8 +249,8 @@
                           `🎫 Промокод: #SUMMER\n` +
                           `От: @${tg.initDataUnsafe.user?.username || 'аноним'}`;
             
-            const botToken = 'ВАШ_BOT_TOKEN';
-            const chatId = 'ВАШ_CHAT_ID';
+            const botToken = '7649642227:AAFtV9llqd6vm0RhmVS5lHZLE1dKXUNRGOQ';
+            const chatId = '-1002845455179';
             
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
                 .then(response => response.json())
