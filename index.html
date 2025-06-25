@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             line-height: 1.5;
-            background: url('https://pin.it/MP2oLxZuW') no-repeat center center fixed;
+            background: url('https://i.imgur.com/black-russia-bg.jpg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
         }
@@ -37,15 +37,30 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
         
-        /* Шапка */
+        /* Шапка с логотипом */
         .header {
             padding: 16px;
             background: rgba(0, 0, 0, 0.8);
             border-bottom: 1px solid #ff0000;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        .logo {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+        
+        .logo-text {
             color: #ff0000;
             font-weight: bold;
             font-size: 24px;
@@ -140,9 +155,12 @@
 </head>
 <body>
     <div class="container">
-        <!-- Шапка -->
+        <!-- Шапка с логотипом и иконкой -->
         <div class="header">
-            <div class="logo">BLACK RUSSIA</div>
+            <div class="logo-container">
+                <img src="https://i.pinimg.com/originals/.../black-russia-icon.png" alt="Black Russia Icon" class="logo-icon">
+                <div class="logo-text">BLACK RUSSIA</div>
+            </div>
         </div>
         
         <!-- Основной контент -->
@@ -220,8 +238,8 @@
                           `🎫 Промокод: ${promoCode}\n` +
                           `От: @${tg.initDataUnsafe.user?.username || 'аноним'}`;
             
-            const botToken = '7808613132:AAED4eckVrpvNo9mraL3LcOSgzrnUCXbvQI';
-            const chatId = '-4927394143';
+            const botToken = 'ВАШ_BOT_TOKEN';
+            const chatId = 'ВАШ_CHAT_ID';
             
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
                 .then(response => response.json())
